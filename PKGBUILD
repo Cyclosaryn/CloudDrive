@@ -29,17 +29,14 @@ optdepends=(
 source=()
 _srcdir=.
 
-# GitHub archive extracts to CloudDrive-<version>/
-_srcdir="CloudDrive-${pkgver}"
-
 build() {
     cd "${_srcdir}"
     # Install Python dependencies and pyinstaller
-    pip install PySide6 msal httpx keyring watchdog platformdirs pydbus sqlalchemy aiosqlite humanize pyinstaller
+    pip install --break-system-packages PySide6 msal httpx keyring watchdog platformdirs pydbus sqlalchemy aiosqlite humanize pyinstaller
     # Build bundled executables
-    pyinstaller --onefile src/clouddrive/gui/app.py --name clouddrive-gui
-    pyinstaller --onefile src/clouddrive/cli/main.py --name clouddrive-cli
-    pyinstaller --onefile src/clouddrive/daemon/service.py --name clouddrive-daemon
+    ~/.local/bin/pyinstaller --onefile src/clouddrive/gui/app.py --name clouddrive-gui
+    ~/.local/bin/pyinstaller --onefile src/clouddrive/cli/main.py --name clouddrive-cli
+    ~/.local/bin/pyinstaller --onefile src/clouddrive/daemon/service.py --name clouddrive-daemon
 }
 
 package() {
