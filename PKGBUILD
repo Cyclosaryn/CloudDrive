@@ -1,6 +1,6 @@
 # Maintainer: CloudDrive Contributors
 pkgname=clouddrive
-pkgver=0.1.8
+pkgver=0.1.9
 pkgrel=1
 pkgdesc="A modern, user-friendly OneDrive client for Linux"
 arch=('any')
@@ -25,7 +25,7 @@ optdepends=(
 )
 # For AUR builds, download from GitHub
 source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/v${pkgver}.tar.gz")
-sha256sums=('7e8f9a8164c9cd7e1f7ccd899e5354df28ab550c7f7710bf2a68466799b9cabe')
+sha256sums=('7a741b601ebe8e4e2a63f39c8cecb45b0cc45f027e8015577cd3aed3523c46ad')
 
 # GitHub archive extracts to CloudDrive-<version>/
 _srcdir="CloudDrive-${pkgver}"
