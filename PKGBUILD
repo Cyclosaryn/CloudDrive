@@ -1,6 +1,6 @@
 # Maintainer: CloudDrive Contributors
 pkgname=clouddrive
-pkgver=0.1.0
+pkgver=0.1.1
 pkgrel=1
 pkgdesc="A modern, user-friendly OneDrive client for Linux"
 arch=('any')
