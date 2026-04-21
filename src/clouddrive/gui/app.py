@@ -59,6 +59,8 @@ def _connect_dbus():
         from pydbus import SessionBus
         bus = SessionBus()
         proxy = bus.get("org.clouddrive.Daemon", "/org/clouddrive/Daemon")
+        # Quick test to verify the connection works
+        proxy.GetStatus()
         return proxy
     except Exception:
         return None
@@ -85,25 +87,31 @@ def main() -> None:
 
     # Start daemon if user is authenticated
     daemon_proc = None
+    dbus_proxy = None
     if config.accounts:
         daemon_proc = _start_daemon()
 
         # Poll for D-Bus connection and status updates
         def poll_daemon():
-            proxy = _connect_dbus()
-            if proxy:
+            nonlocal dbus_proxy
+            if dbus_proxy is None:
+                dbus_proxy = _connect_dbus()
+                if dbus_proxy:
+                    logger.info("Connected to daemon via D-Bus")
+                    tray.set_dbus_proxy(dbus_proxy)
+
+            if dbus_proxy:
                 try:
-                    status = proxy.GetStatus()
+                    status = dbus_proxy.GetStatus()
                     logger.debug("Daemon status: %s", status)
                     from clouddrive.core.sync_engine import SyncStatus
                     status_map = {s.name: s for s in SyncStatus}
                     if status in status_map:
                         tray.update_sync_status(status_map[status])
                 except Exception:
-                    pass
-
-                # Wire tray actions to D-Bus
-                tray.set_dbus_proxy(proxy)
+                    # Connection lost, reset proxy
+                    dbus_proxy = None
+                    tray.set_dbus_proxy(None)
 
         # Give daemon time to start, then connect
         QTimer.singleShot(3000, poll_daemon)

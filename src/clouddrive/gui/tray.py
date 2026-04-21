@@ -71,26 +71,25 @@ class SystemTrayManager:
 
     def show(self) -> None:
         self._tray.show()
+        logger.info("Tray icon visible: %s, geometry: %s",
+                     self._tray.isVisible(), self._tray.geometry())
 
         # Update account info if already authenticated
         self._refresh_account_info()
 
         # Check if first run (no accounts configured)
         if not self._config.accounts:
+            logger.info("No accounts configured, showing setup wizard")
             QTimer.singleShot(500, self._show_setup_wizard)
+        else:
+            logger.info("Accounts found: %d", len(self._config.accounts))
 
     def _refresh_account_info(self) -> None:
-        """Update the account display from auth state."""
-        try:
-            from clouddrive.core.auth import AuthManager
-            auth = AuthManager(self._config)
-            account = auth.get_account_info()
-            if account:
-                name = account.get("name", "User")
-                email = account.get("username", "")
-                self.update_account_info(name, email)
-        except Exception:
-            pass
+        """Update the account display from config."""
+        if self._config.accounts:
+            acct = self._config.accounts[0]
+            name = acct.get("name", "User")
+            self.update_account_info(name, "Signed in")
 
     def _build_menu(self) -> QMenu:
         menu = QMenu(self._parent_widget)
