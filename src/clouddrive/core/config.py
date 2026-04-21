@@ -37,12 +37,17 @@ AUTH_AUTHORITY = "https://login.microsoftonline.com/common"
 DEFAULT_CLIENT_ID = "a944ee72-00b7-4d53-84f3-ebb93283545b"
 REDIRECT_URI = "http://localhost:8400"
 
-SCOPES = [
-    "Files.ReadWrite.All",
-    "Sites.Read.All",
-    "User.Read",
-    "offline_access",
-]
+# Ensure reserved scopes are always last and not duplicated
+def get_scopes() -> list[str]:
+    base_scopes = [
+        "Files.ReadWrite.All",
+        "Sites.Read.All",
+        "User.Read",
+    ]
+    reserved = ["offline_access"]
+    return base_scopes + reserved
+
+SCOPES = get_scopes()
 
 
 @dataclass
