@@ -23,8 +23,11 @@ optdepends=(
     'libnotify: Desktop notifications'
     'xdg-utils: Opening folders and URLs'
 )
-source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/v${pkgver}.tar.gz")
-sha256sums=('SKIP')
+# For local builds, use current directory as source
+# source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/v${pkgver}.tar.gz")
+# sha256sums=('SKIP')
+source=()
+_srcdir=.
 
 # GitHub archive extracts to CloudDrive-<version>/
 _srcdir="CloudDrive-${pkgver}"
