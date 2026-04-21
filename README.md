@@ -81,15 +81,20 @@ The existing `abraunegg/onedrive` client is powerful but CLI-heavy and difficult
 
 ## Installation
 
-### Arch Linux (AUR)
+### Arch Linux (PKGBUILD)
 
 ```bash
-# Using an AUR helper (e.g., yay)
-yay -S clouddrive
+# Update your system and package database
+pacman -Syu
 
-# Or manually
+# Install build dependencies
+pacman -S python-build python-installer python-setuptools python-setuptools-scm python-wheel python-pip
+
+# Clone the repository
 git clone https://github.com/Cyclosaryn/CloudDrive.git
-cd clouddrive
+cd CloudDrive
+
+# Build and install the package
 makepkg -si
 ```
 
@@ -98,7 +103,7 @@ makepkg -si
 ```bash
 # Clone the repository
 git clone https://github.com/Cyclosaryn/CloudDrive.git
-cd clouddrive
+cd CloudDrive
 
 # Install in a virtual environment
 python -m venv .venv
@@ -109,7 +114,7 @@ pip install -e ".[dev]"
 ### Dependencies (Arch Linux)
 
 ```bash
-sudo pacman -S python python-pip python-pyside6 python-sqlalchemy python-httpx dbus
+pacman -S python python-pip python-pyside6 python-sqlalchemy python-httpx dbus
 pip install msal keyring watchdog platformdirs pydbus humanize
 ```
 

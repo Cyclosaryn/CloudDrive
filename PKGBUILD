@@ -7,14 +7,6 @@ arch=('any')
 url="https://github.com/Cyclosaryn/CloudDrive"
 license=('GPL-3.0-or-later')
 depends=(
-    'python'
-    'python-pyside6'
-    'python-httpx'
-    'python-keyring'
-    'python-watchdog'
-    'python-platformdirs'
-    'python-sqlalchemy'
-    'python-humanize'
     'dbus'
 )
 makedepends=(
@@ -25,15 +17,12 @@ makedepends=(
     'python-wheel'
     'python-pip'
 )
-# Packages not in official repos — installed automatically via pip
-# as dependencies of the wheel, or available from the AUR.
+# All Python dependencies are bundled in the wheel
 optdepends=(
     'python-tomli-w: Saving configuration (required for settings changes)'
     'libnotify: Desktop notifications'
     'xdg-utils: Opening folders and URLs'
 )
-# Python deps that pip resolves at install time (not in official repos):
-#   msal, pydbus, aiosqlite
 source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/v${pkgver}.tar.gz")
 sha256sums=('SKIP')
 
@@ -42,12 +31,20 @@ _srcdir="CloudDrive-${pkgver}"
 
 build() {
     cd "${_srcdir}"
-    python -m build --wheel --no-isolation
+    # Install Python dependencies and pyinstaller
+    pip install PySide6 msal httpx keyring watchdog platformdirs pydbus sqlalchemy aiosqlite humanize pyinstaller
+    # Build bundled executables
+    pyinstaller --onefile src/clouddrive/gui/app.py --name clouddrive-gui
+    pyinstaller --onefile src/clouddrive/cli/main.py --name clouddrive-cli
+    pyinstaller --onefile src/clouddrive/daemon/service.py --name clouddrive-daemon
 }
 
 package() {
     cd "${_srcdir}"
-    python -m installer --destdir="${pkgdir}" dist/*.whl
+    # Install bundled executables
+    install -Dm755 dist/clouddrive-gui "${pkgdir}/usr/bin/clouddrive-gui"
+    install -Dm755 dist/clouddrive-cli "${pkgdir}/usr/bin/clouddrive-cli"
+    install -Dm755 dist/clouddrive-daemon "${pkgdir}/usr/bin/clouddrive-daemon"
 
     # Install systemd user service
     install -Dm644 systemd/clouddrive.service \
