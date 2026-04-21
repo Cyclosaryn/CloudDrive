@@ -1,6 +1,6 @@
 # Maintainer: CloudDrive Contributors
 pkgname=clouddrive
-pkgver=0.1.1
+pkgver=0.1.2
 pkgrel=1
 pkgdesc="A modern, user-friendly OneDrive client for Linux"
 arch=('any')
@@ -27,8 +27,8 @@ optdepends=(
 source=("git+${url}.git")
 sha256sums=('SKIP')
 
-# Git repo extracts to clouddrive/
-_srcdir="${pkgname}"
+# Git repo extracts to CloudDrive/
+_srcdir="CloudDrive"
 
 pkgver() {
   cd "$srcdir/${pkgname}"
