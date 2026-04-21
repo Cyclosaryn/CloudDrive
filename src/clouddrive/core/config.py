@@ -313,6 +313,9 @@ def load_config(config_path: Path | None = None) -> AppConfig:
             else:
                 setattr(getattr(config, section), attr, value)
 
+    # Always sanitize scopes after loading config
+    config.auth.scopes = sanitize_scopes(config.auth.scopes)
+
     return config
 
 
