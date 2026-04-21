@@ -13,7 +13,7 @@ from typing import Any
 
 import msal  # type: ignore[import-untyped]
 
-from clouddrive.core.config import AppConfig, SCOPES
+from clouddrive.core.config import AppConfig, SCOPES, sanitize_scopes
 
 logger = logging.getLogger(__name__)
 
@@ -108,8 +108,9 @@ class AuthManager:
         Returns the token result dict or None on failure.
         """
         try:
+            scopes = sanitize_scopes(self._config.auth.scopes)
             result = self._msal_app.acquire_token_interactive(
-                scopes=self._config.auth.scopes,
+                scopes=scopes,
                 port=int(self._config.auth.redirect_uri.split(":")[-1]),
             )
             if "access_token" in result:
@@ -132,7 +133,8 @@ class AuthManager:
 
         Returns the token result dict or None on failure.
         """
-        flow = self._msal_app.initiate_device_flow(scopes=self._config.auth.scopes)
+        scopes = sanitize_scopes(self._config.auth.scopes)
+        flow = self._msal_app.initiate_device_flow(scopes=scopes)
 
         if "user_code" not in flow:
             logger.error("Device code flow initiation failed: %s", flow.get("error_description"))
