@@ -66,8 +66,8 @@ class SystemTrayManager:
     def show(self) -> None:
         self._tray.show()
 
-        # Check if first run (no client_id configured)
-        if not self._config.auth.client_id:
+        # Check if first run (no accounts configured)
+        if not self._config.accounts:
             QTimer.singleShot(500, self._show_setup_wizard)
 
     def _build_menu(self) -> QMenu:

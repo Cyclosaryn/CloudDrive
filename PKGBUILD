@@ -23,12 +23,15 @@ optdepends=(
     'libnotify: Desktop notifications'
     'xdg-utils: Opening folders and URLs'
 )
-# For local builds, use current directory as source
-# source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/v${pkgver}.tar.gz")
-# sha256sums=('SKIP')
-source=()
+# For AUR builds, download from GitHub
+source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/v${pkgver}.tar.gz")
+sha256sums=('SKIP')
+
+# GitHub archive extracts to CloudDrive-<version>/
+_srcdir="CloudDrive-${pkgver}"
 
 build() {
+    cd "${_srcdir}"
     # Install Python dependencies and pyinstaller
     pip install --break-system-packages PySide6 msal httpx keyring watchdog platformdirs pydbus sqlalchemy aiosqlite humanize pyinstaller
     # Build bundled executables
