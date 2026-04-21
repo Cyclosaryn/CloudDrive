@@ -1,0 +1,25 @@
+[Desktop Entry]
+Type=Application
+Name=CloudDrive
+GenericName=OneDrive Client
+Comment=Sync your files with Microsoft OneDrive
+Exec=clouddrive-gui
+Icon=clouddrive
+Terminal=false
+StartupNotify=true
+Categories=Network;FileTransfer;Utility;
+Keywords=onedrive;cloud;sync;microsoft;
+MimeType=
+Actions=sync;pause;settings;
+
+[Desktop Action sync]
+Name=Sync Now
+Exec=clouddrive sync
+
+[Desktop Action pause]
+Name=Pause Syncing
+Exec=clouddrive pause
+
+[Desktop Action settings]
+Name=Settings
+Exec=clouddrive-gui --settings

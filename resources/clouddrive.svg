@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- CloudDrive icon: stylized cloud in Microsoft blue -->
+  <defs>
+    <linearGradient id="cloudGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0078d4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#005a9e;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Cloud body -->
+  <path d="M16 44 C8 44 4 38 4 32 C4 26 8 22 14 20
+           C14 12 22 6 32 6 C40 6 46 10 48 18
+           C54 18 60 24 60 32 C60 40 54 44 48 44 Z"
+        fill="url(#cloudGrad)" />
+  <!-- Sync arrows -->
+  <path d="M24 30 L32 22 L40 30 M32 22 L32 40" 
+        stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"
+        opacity="0.9" />
+</svg>

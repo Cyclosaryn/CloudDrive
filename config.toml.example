@@ -1,0 +1,23 @@
+# CloudDrive
+
+A modern, user-friendly OneDrive client for Linux.
+
+## Sample Configuration
+
+```toml
+log_level = "INFO"
+minimize_to_tray = true
+autostart = true
+
+[sync]
+sync_dir = "~/OneDrive"
+sync_interval_seconds = 300
+
+[auth]
+client_id = "your-client-id-here"
+
+[notifications]
+enabled = true
+```
+
+See `~/.config/clouddrive/config.toml` for full options.

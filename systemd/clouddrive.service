@@ -1,0 +1,24 @@
+[Unit]
+Description=CloudDrive — OneDrive sync daemon
+Documentation=https://github.com/clouddrive-linux/clouddrive
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/clouddrive-daemon
+Restart=on-failure
+RestartSec=10
+
+# Hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%h/OneDrive %h/.config/clouddrive %h/.local/share/clouddrive %h/.cache/clouddrive
+PrivateTmp=true
+
+# Environment
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=default.target
