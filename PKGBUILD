@@ -24,16 +24,11 @@ optdepends=(
     'xdg-utils: Opening folders and URLs'
 )
 # For AUR builds, download from GitHub
-source=("git+${url}.git")
-sha256sums=('SKIP')
+source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/v${pkgver}.tar.gz")
+sha256sums=('55d46260f96dc651c279ee56d00df029cdde18f8bb6ea775951d6f35eb7d2007')
 
-# Git repo extracts to CloudDrive/
-_srcdir="CloudDrive"
-
-pkgver() {
-  cd "$srcdir/${pkgname}"
-  git describe --tags --abbrev=0 | sed 's/^v//'
-}
+# GitHub archive extracts to CloudDrive-<version>/
+_srcdir="CloudDrive-${pkgver}"
 
 build() {
     cd "${_srcdir}"

@@ -15,7 +15,7 @@ pkgbase = clouddrive
 	optdepends = python-tomli-w: Saving configuration (required for settings changes)
 	optdepends = libnotify: Desktop notifications
 	optdepends = xdg-utils: Opening folders and URLs
-	source = git+https://github.com/Cyclosaryn/CloudDrive.git
-	sha256sums = SKIP
+	source = clouddrive-0.1.2.tar.gz::https://github.com/Cyclosaryn/CloudDrive/archive/v0.1.2.tar.gz
+	sha256sums = 55d46260f96dc651c279ee56d00df029cdde18f8bb6ea775951d6f35eb7d2007
 
 pkgname = clouddrive
