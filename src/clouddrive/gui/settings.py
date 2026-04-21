@@ -112,7 +112,24 @@ class SettingsWindow(QDialog):
         layout.addWidget(storage_group)
         layout.addStretch()
 
+        # Load account info from auth state
+        self._refresh_account_info()
+
         return widget
+
+    def _refresh_account_info(self) -> None:
+        """Update the account display from auth state."""
+        try:
+            from clouddrive.core.auth import AuthManager
+            auth = AuthManager(self._config)
+            account = auth.get_account_info()
+            if account:
+                name = account.get("name", "User")
+                email = account.get("username", "")
+                self._account_label.setText(name)
+                self._email_label.setText(email)
+        except Exception:
+            pass
 
     def _create_sync_tab(self) -> QWidget:
         widget = QWidget()
@@ -287,7 +304,8 @@ class SettingsWindow(QDialog):
 
     def _browse_sync_dir(self) -> None:
         folder = QFileDialog.getExistingDirectory(
-            self, "Choose OneDrive Folder", str(Path.home())
+            self, "Choose OneDrive Folder", str(Path.home()),
+            QFileDialog.Option.DontUseNativeDialog,
         )
         if folder:
             self._sync_dir_edit.setText(folder)

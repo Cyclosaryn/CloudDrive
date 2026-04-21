@@ -46,6 +46,7 @@ class SystemTrayManager:
         self._signals = TraySignals()
         self._sync_status = SyncStatus.IDLE
         self._is_paused = False
+        self._dbus_proxy = None
 
         # Hidden parent widget required for KDE Plasma SNI tray menus
         self._parent_widget = QWidget()
@@ -217,6 +218,10 @@ class SystemTrayManager:
         if self._config.notifications.enabled:
             self._tray.showMessage(title, message, QSystemTrayIcon.MessageIcon.Information, 5000)
 
+    def set_dbus_proxy(self, proxy) -> None:
+        """Set the D-Bus proxy for daemon communication."""
+        self._dbus_proxy = proxy
+
     # === Action handlers ===
 
     def _on_activated(self, reason: QSystemTrayIcon.ActivationReason) -> None:
@@ -237,15 +242,32 @@ class SystemTrayManager:
             pass
 
     def _trigger_sync(self) -> None:
-        # Will be connected to daemon via D-Bus
-        self.show_notification("CloudDrive", "Sync triggered")
+        if self._dbus_proxy:
+            try:
+                self._dbus_proxy.SyncNow()
+                self.show_notification("CloudDrive", "Sync triggered")
+            except Exception as e:
+                logger.error("Failed to trigger sync: %s", e)
+                self.show_notification("CloudDrive", "Failed to trigger sync")
+        else:
+            self.show_notification("CloudDrive", "Daemon not connected")
 
     def _toggle_pause(self) -> None:
         self._is_paused = not self._is_paused
         if self._is_paused:
+            if self._dbus_proxy:
+                try:
+                    self._dbus_proxy.Pause()
+                except Exception:
+                    pass
             self._pause_action.setText("Resume syncing")
             self.update_sync_status(SyncStatus.PAUSED)
         else:
+            if self._dbus_proxy:
+                try:
+                    self._dbus_proxy.Resume()
+                except Exception:
+                    pass
             self._pause_action.setText("Pause syncing")
             self.update_sync_status(SyncStatus.IDLE)
 
@@ -281,7 +303,7 @@ class SystemTrayManager:
             "About CloudDrive",
             "<h2>CloudDrive</h2>"
             "<p>A modern OneDrive client for Linux</p>"
-            "<p>Version 0.1.0</p>"
+            "<p>Version 0.1.9</p>"
             "<p>Licensed under GPL-3.0</p>"
             "<p><a href='https://github.com/Cyclosaryn/CloudDrive'>GitHub</a></p>",
         )
