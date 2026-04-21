@@ -32,7 +32,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt, QThread, Signal
 from PySide6.QtGui import QFont
 
-from clouddrive.core.config import AppConfig, save_config
+from clouddrive.core.config import AppConfig, save_config, DEFAULT_CLIENT_ID
 
 logger = logging.getLogger(__name__)
 
@@ -51,8 +51,8 @@ class WelcomePage(QWizardPage):
         welcome = QLabel(
             "<p>CloudDrive syncs your files with Microsoft OneDrive, "
             "just like the official client on Windows.</p>"
-            "<p>To get started, you'll need to register an application "
-            "in the Azure Portal (it's free).</p>"
+            "<p>CloudDrive includes a built-in app registration, so you can sign in right away. "
+            "If you prefer to use your own Azure app, you can provide a custom client ID below.</p>"
         )
         welcome.setWordWrap(True)
         layout.addWidget(welcome)
@@ -62,6 +62,7 @@ class WelcomePage(QWizardPage):
         steps_layout = QVBoxLayout(steps_group)
 
         instructions = QLabel(
+            "<b>Optional: Use a custom app registration</b><br/>"
             "<ol>"
             "<li>Visit the <a href='https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade'>"
             "Azure App Registrations</a> page</li>"
@@ -83,9 +84,10 @@ class WelcomePage(QWizardPage):
         # Client ID input
         id_layout = QFormLayout()
         self._client_id_edit = QLineEdit()
+        self._client_id_edit.setText(DEFAULT_CLIENT_ID)
         self._client_id_edit.setPlaceholderText("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx")
-        self.registerField("client_id*", self._client_id_edit)
-        id_layout.addRow("Application (client) ID:", self._client_id_edit)
+        self.registerField("client_id", self._client_id_edit)
+        id_layout.addRow("Application (client) ID (optional):", self._client_id_edit)
         layout.addLayout(id_layout)
 
         # Open Azure Portal button
