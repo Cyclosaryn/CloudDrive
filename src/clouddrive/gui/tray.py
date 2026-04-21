@@ -17,6 +17,7 @@ from PySide6.QtWidgets import (
     QSystemTrayIcon,
     QMenu,
     QWidget,
+    QApplication,
 )
 from PySide6.QtGui import QIcon, QAction, QPixmap, QPainter, QColor
 from PySide6.QtCore import QTimer, Signal, QObject
@@ -46,8 +47,12 @@ class SystemTrayManager:
         self._sync_status = SyncStatus.IDLE
         self._is_paused = False
 
+        # Hidden parent widget required for KDE Plasma SNI tray menus
+        self._parent_widget = QWidget()
+        self._parent_widget.hide()
+
         # Create tray icon
-        self._tray = QSystemTrayIcon()
+        self._tray = QSystemTrayIcon(self._parent_widget)
         self._tray.setToolTip("CloudDrive — OneDrive for Linux")
         self._update_icon()
 
@@ -66,71 +71,77 @@ class SystemTrayManager:
     def show(self) -> None:
         self._tray.show()
 
+        # Update account info if already authenticated
+        self._refresh_account_info()
+
         # Check if first run (no accounts configured)
         if not self._config.accounts:
             QTimer.singleShot(500, self._show_setup_wizard)
 
+    def _refresh_account_info(self) -> None:
+        """Update the account display from auth state."""
+        try:
+            from clouddrive.core.auth import AuthManager
+            auth = AuthManager(self._config)
+            account = auth.get_account_info()
+            if account:
+                name = account.get("name", "User")
+                email = account.get("username", "")
+                self.update_account_info(name, email)
+        except Exception:
+            pass
+
     def _build_menu(self) -> QMenu:
-        menu = QMenu()
+        menu = QMenu(self._parent_widget)
 
         # Account info header
-        self._account_action = QAction("Not signed in", menu)
+        self._account_action = menu.addAction("Not signed in")
         self._account_action.setEnabled(False)
-        menu.addAction(self._account_action)
 
         # Storage info
-        self._storage_action = QAction("Storage: —", menu)
+        self._storage_action = menu.addAction("Storage: —")
         self._storage_action.setEnabled(False)
-        menu.addAction(self._storage_action)
 
         menu.addSeparator()
 
         # Open OneDrive folder
-        self._open_folder_action = QAction("Open OneDrive folder", menu)
+        self._open_folder_action = menu.addAction("Open OneDrive folder")
         self._open_folder_action.triggered.connect(self._open_sync_folder)
-        menu.addAction(self._open_folder_action)
 
         # View online
-        self._view_online_action = QAction("View online", menu)
+        self._view_online_action = menu.addAction("View online")
         self._view_online_action.triggered.connect(self._open_online)
-        menu.addAction(self._view_online_action)
 
         menu.addSeparator()
 
         # Activity center
-        self._activity_action = QAction("Recent activity", menu)
+        self._activity_action = menu.addAction("Recent activity")
         self._activity_action.triggered.connect(self._show_activity)
-        menu.addAction(self._activity_action)
 
         menu.addSeparator()
 
         # Sync controls
-        self._sync_now_action = QAction("Sync now", menu)
+        self._sync_now_action = menu.addAction("Sync now")
         self._sync_now_action.triggered.connect(self._trigger_sync)
-        menu.addAction(self._sync_now_action)
 
-        self._pause_action = QAction("Pause syncing", menu)
+        self._pause_action = menu.addAction("Pause syncing")
         self._pause_action.triggered.connect(self._toggle_pause)
-        menu.addAction(self._pause_action)
 
         menu.addSeparator()
 
         # Settings
-        self._settings_action = QAction("Settings", menu)
+        self._settings_action = menu.addAction("Settings")
         self._settings_action.triggered.connect(self._show_settings)
-        menu.addAction(self._settings_action)
 
         # Help
-        self._help_action = QAction("Help && About", menu)
+        self._help_action = menu.addAction("Help && About")
         self._help_action.triggered.connect(self._show_about)
-        menu.addAction(self._help_action)
 
         menu.addSeparator()
 
         # Quit
-        self._quit_action = QAction("Quit CloudDrive", menu)
+        self._quit_action = menu.addAction("Quit CloudDrive")
         self._quit_action.triggered.connect(self._quit)
-        menu.addAction(self._quit_action)
 
         return menu
 
@@ -256,7 +267,12 @@ class SystemTrayManager:
         from clouddrive.gui.wizard import SetupWizard
         if self._wizard_window is None:
             self._wizard_window = SetupWizard(self._config)
+            self._wizard_window.finished.connect(self._on_wizard_finished)
         self._wizard_window.show()
+
+    def _on_wizard_finished(self, result: int) -> None:
+        """Update tray after wizard completes."""
+        self._refresh_account_info()
 
     def _show_about(self) -> None:
         from PySide6.QtWidgets import QMessageBox
@@ -271,6 +287,5 @@ class SystemTrayManager:
         )
 
     def _quit(self) -> None:
-        from PySide6.QtWidgets import QApplication
         self._tray.hide()
         QApplication.quit()

@@ -354,6 +354,16 @@ class SetupWizard(QWizard):
         self._config.sync.monitor_real_time = self._options_page._realtime_check.isChecked()
         self._config.sync.skip_dotfiles = self._options_page._dotfiles_check.isChecked()
 
+        # Register the authenticated account so the wizard won't show again
+        if not self._config.accounts:
+            self._config.accounts.append({
+                "name": "Personal",
+                "account_type": "personal",
+                "client_id": self._config.auth.client_id,
+                "sync_dir": self._config.sync.sync_dir,
+                "enabled": True,
+            })
+
         # Save config
         try:
             save_config(self._config)
