@@ -27,10 +27,8 @@ optdepends=(
 # source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/v${pkgver}.tar.gz")
 # sha256sums=('SKIP')
 source=()
-_srcdir=.
 
 build() {
-    cd "${_srcdir}"
     # Install Python dependencies and pyinstaller
     pip install --break-system-packages PySide6 msal httpx keyring watchdog platformdirs pydbus sqlalchemy aiosqlite humanize pyinstaller
     # Build bundled executables
