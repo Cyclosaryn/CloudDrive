@@ -108,7 +108,8 @@ class AuthManager:
         Returns the token result dict or None on failure.
         """
         try:
-            scopes = sanitize_scopes(self._config.auth.scopes)
+            scopes = sanitize_scopes(list(self._config.auth.scopes))
+            logger.info(f"MSAL scopes used for authentication: {scopes}")
             result = self._msal_app.acquire_token_interactive(
                 scopes=scopes,
                 port=int(self._config.auth.redirect_uri.split(":")[-1]),
