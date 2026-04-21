@@ -80,8 +80,10 @@ class AuthManager:
         accounts = self._msal_app.get_accounts()
         if not accounts:
             return False
+        reserved = {"offline_access", "openid", "profile"}
+        scopes = [s for s in self._config.auth.scopes if s not in reserved]
         result = self._msal_app.acquire_token_silent(
-            scopes=self._config.auth.scopes,
+            scopes=scopes,
             account=accounts[0],
         )
         return result is not None and "access_token" in result
@@ -90,8 +92,10 @@ class AuthManager:
         """Get a valid access token, refreshing silently if needed."""
         accounts = self._msal_app.get_accounts()
         if accounts:
+            reserved = {"offline_access", "openid", "profile"}
+            scopes = [s for s in self._config.auth.scopes if s not in reserved]
             result = self._msal_app.acquire_token_silent(
-                scopes=self._config.auth.scopes,
+                scopes=scopes,
                 account=accounts[0],
             )
             if result and "access_token" in result:
@@ -108,7 +112,10 @@ class AuthManager:
         Returns the token result dict or None on failure.
         """
         try:
-            scopes = sanitize_scopes(list(self._config.auth.scopes))
+            # MSAL handles reserved scopes (offline_access, openid, profile)
+            # internally — they must NOT be in the scopes parameter
+            reserved = {"offline_access", "openid", "profile"}
+            scopes = [s for s in self._config.auth.scopes if s not in reserved]
             logger.info(f"MSAL scopes used for authentication: {scopes}")
             result = self._msal_app.acquire_token_interactive(
                 scopes=scopes,
@@ -134,7 +141,8 @@ class AuthManager:
 
         Returns the token result dict or None on failure.
         """
-        scopes = sanitize_scopes(self._config.auth.scopes)
+        reserved = {"offline_access", "openid", "profile"}
+        scopes = [s for s in self._config.auth.scopes if s not in reserved]
         flow = self._msal_app.initiate_device_flow(scopes=scopes)
 
         if "user_code" not in flow:
