@@ -47,7 +47,19 @@ def get_scopes() -> list[str]:
     reserved = ["offline_access"]
     return base_scopes + reserved
 
-SCOPES = get_scopes()
+def sanitize_scopes(scopes: list[str]) -> list[str]:
+    # Remove duplicates, preserve order, and ensure reserved scopes are last
+    reserved = ["offline_access", "openid", "profile"]
+    base = [s for s in scopes if s not in reserved]
+    present_reserved = [s for s in reserved if s in scopes]
+    return base + present_reserved
+
+SCOPES = sanitize_scopes([
+    "Files.ReadWrite.All",
+    "Sites.Read.All",
+    "User.Read",
+    "offline_access",
+])
 
 
 @dataclass
@@ -122,7 +134,12 @@ class AuthConfig:
     client_id: str = DEFAULT_CLIENT_ID
     authority: str = AUTH_AUTHORITY
     redirect_uri: str = REDIRECT_URI
-    scopes: list[str] = field(default_factory=lambda: list(SCOPES))
+    scopes: list[str] = field(default_factory=lambda: sanitize_scopes([
+        "Files.ReadWrite.All",
+        "Sites.Read.All",
+        "User.Read",
+        "offline_access",
+    ]))
 
 
 @dataclass
