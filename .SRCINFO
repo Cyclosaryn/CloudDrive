@@ -1,6 +1,6 @@
 pkgbase = clouddrive
 	pkgdesc = A modern, user-friendly OneDrive client for Linux
-	pkgver = 0.1.5
+	pkgver = 0.1.6
 	pkgrel = 1
 	url = https://github.com/Cyclosaryn/CloudDrive
 	arch = any
@@ -15,7 +15,7 @@ pkgbase = clouddrive
 	optdepends = python-tomli-w: Saving configuration (required for settings changes)
 	optdepends = libnotify: Desktop notifications
 	optdepends = xdg-utils: Opening folders and URLs
-	source = clouddrive-0.1.5.tar.gz::https://github.com/Cyclosaryn/CloudDrive/archive/v0.1.5.tar.gz
-	sha256sums = 862daf36d85b204c1b2105eb1f458718b89427065cd343f65db74fc84196f961
+	source = clouddrive-0.1.6.tar.gz::https://github.com/Cyclosaryn/CloudDrive/archive/v0.1.6.tar.gz
+	sha256sums = 09724b8df3811816b19bc53f819c5b836a3ef1fc0f7a088b75a5958a0cf49567
 
 pkgname = clouddrive
