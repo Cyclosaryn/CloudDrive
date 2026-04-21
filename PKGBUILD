@@ -33,7 +33,7 @@ _srcdir="CloudDrive-${pkgver}"
 build() {
     cd "${_srcdir}"
     # Install Python dependencies and pyinstaller
-    pip install --break-system-packages PySide6 msal httpx keyring watchdog platformdirs pydbus sqlalchemy aiosqlite humanize pyinstaller
+    pip install --break-system-packages PySide6 msal httpx keyring watchdog platformdirs pydbus sqlalchemy aiosqlite humanize tomli_w pyinstaller
     # Build bundled executables
     ~/.local/bin/pyinstaller --onefile src/clouddrive/gui/app.py --name clouddrive-gui
     ~/.local/bin/pyinstaller --onefile src/clouddrive/cli/main.py --name clouddrive-cli

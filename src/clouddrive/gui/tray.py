@@ -74,63 +74,63 @@ class SystemTrayManager:
         menu = QMenu()
 
         # Account info header
-        self._account_action = QAction("Not signed in")
+        self._account_action = QAction("Not signed in", menu)
         self._account_action.setEnabled(False)
         menu.addAction(self._account_action)
 
         # Storage info
-        self._storage_action = QAction("Storage: —")
+        self._storage_action = QAction("Storage: —", menu)
         self._storage_action.setEnabled(False)
         menu.addAction(self._storage_action)
 
         menu.addSeparator()
 
         # Open OneDrive folder
-        open_folder = QAction("Open OneDrive folder")
-        open_folder.triggered.connect(self._open_sync_folder)
-        menu.addAction(open_folder)
+        self._open_folder_action = QAction("Open OneDrive folder", menu)
+        self._open_folder_action.triggered.connect(self._open_sync_folder)
+        menu.addAction(self._open_folder_action)
 
         # View online
-        view_online = QAction("View online")
-        view_online.triggered.connect(self._open_online)
-        menu.addAction(view_online)
+        self._view_online_action = QAction("View online", menu)
+        self._view_online_action.triggered.connect(self._open_online)
+        menu.addAction(self._view_online_action)
 
         menu.addSeparator()
 
         # Activity center
-        activity = QAction("Recent activity")
-        activity.triggered.connect(self._show_activity)
-        menu.addAction(activity)
+        self._activity_action = QAction("Recent activity", menu)
+        self._activity_action.triggered.connect(self._show_activity)
+        menu.addAction(self._activity_action)
 
         menu.addSeparator()
 
         # Sync controls
-        self._sync_now_action = QAction("Sync now")
+        self._sync_now_action = QAction("Sync now", menu)
         self._sync_now_action.triggered.connect(self._trigger_sync)
         menu.addAction(self._sync_now_action)
 
-        self._pause_action = QAction("Pause syncing")
+        self._pause_action = QAction("Pause syncing", menu)
         self._pause_action.triggered.connect(self._toggle_pause)
         menu.addAction(self._pause_action)
 
         menu.addSeparator()
 
         # Settings
-        settings = QAction("Settings")
-        settings.triggered.connect(self._show_settings)
-        menu.addAction(settings)
+        self._settings_action = QAction("Settings", menu)
+        self._settings_action.triggered.connect(self._show_settings)
+        menu.addAction(self._settings_action)
 
         # Help
-        help_action = QAction("Help && About")
-        help_action.triggered.connect(self._show_about)
-        menu.addAction(help_action)
+        self._help_action = QAction("Help && About", menu)
+        self._help_action.triggered.connect(self._show_about)
+        menu.addAction(self._help_action)
 
         menu.addSeparator()
 
         # Quit
-        quit_action = QAction("Quit CloudDrive")
-        quit_action.triggered.connect(self._quit)
-        menu.addAction(quit_action)
+        self._quit_action = QAction("Quit CloudDrive", menu)
+        self._quit_action.triggered.connect(self._quit)
+        menu.addAction(self._quit_action)
 
         return menu
 

@@ -6,8 +6,12 @@ Launches the system tray icon and manages the main event loop.
 from __future__ import annotations
 
 import logging
+import os
 import sys
 from pathlib import Path
+
+# Workaround for KDE KIO worker errors in bundled apps
+os.environ.setdefault("QT_QPA_PLATFORMTHEME", "")
 
 from PySide6.QtWidgets import QApplication
 from PySide6.QtGui import QIcon

@@ -70,9 +70,13 @@ class WelcomePage(QWizardPage):
             "<li>Name: <b>CloudDrive</b> (or any name you like)</li>"
             "<li>Supported account types: <b>Personal Microsoft accounts only</b><br/>"
             "   (or 'Accounts in any organizational directory and personal' for Business)</li>"
-            "<li>Redirect URI: Select <b>Web</b> → <code>http://localhost:8400</code></li>"
-            "<li>Click <b>Register</b></li>"
-            "<li>Copy the <b>Application (client) ID</b> and paste it below</li>"
+            "<li>Redirect URI: leave blank for now, click <b>Register</b></li>"
+            "<li>Go to <b>Authentication</b> → <b>Add a platform</b> → "
+            "<b>Mobile and desktop applications</b></li>"
+            "<li>Add <code>http://localhost:8400</code> as the redirect URI</li>"
+            "<li>Under <b>Advanced settings</b>, set <b>Allow public client flows</b> to <b>Yes</b></li>"
+            "<li>Click <b>Save</b></li>"
+            "<li>Copy the <b>Application (client) ID</b> from the Overview page and paste it below</li>"
             "</ol>"
         )
         instructions.setWordWrap(True)
@@ -272,7 +276,8 @@ class FolderPage(QWizardPage):
 
     def _browse(self) -> None:
         folder = QFileDialog.getExistingDirectory(
-            self, "Choose OneDrive Folder", str(Path.home())
+            self, "Choose OneDrive Folder", str(Path.home()),
+            QFileDialog.Option.DontUseNativeDialog,
         )
         if folder:
             self._folder_edit.setText(folder)
