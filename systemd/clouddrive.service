@@ -1,6 +1,6 @@
 [Unit]
 Description=CloudDrive — OneDrive sync daemon
-Documentation=https://github.com/clouddrive-linux/clouddrive
+Documentation=https://github.com/Cyclosaryn/CloudDrive
 After=network-online.target
 Wants=network-online.target
 

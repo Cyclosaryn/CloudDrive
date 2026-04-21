@@ -275,7 +275,7 @@ class SettingsWindow(QDialog):
         layout.addWidget(QLabel(""))
 
         link = QLabel(
-            '<a href="https://github.com/clouddrive-linux/clouddrive">GitHub Repository</a>'
+            '<a href="https://github.com/Cyclosaryn/CloudDrive">GitHub Repository</a>'
         )
         link.setOpenExternalLinks(True)
         layout.addWidget(link)

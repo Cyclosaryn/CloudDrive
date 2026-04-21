@@ -267,7 +267,7 @@ class SystemTrayManager:
             "<p>A modern OneDrive client for Linux</p>"
             "<p>Version 0.1.0</p>"
             "<p>Licensed under GPL-3.0</p>"
-            "<p><a href='https://github.com/clouddrive-linux/clouddrive'>GitHub</a></p>",
+            "<p><a href='https://github.com/Cyclosaryn/CloudDrive'>GitHub</a></p>",
         )
 
     def _quit(self) -> None:

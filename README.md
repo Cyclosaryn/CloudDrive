@@ -88,7 +88,7 @@ The existing `abraunegg/onedrive` client is powerful but CLI-heavy and difficult
 yay -S clouddrive
 
 # Or manually
-git clone https://github.com/clouddrive-linux/clouddrive.git
+git clone https://github.com/Cyclosaryn/CloudDrive.git
 cd clouddrive
 makepkg -si
 ```
@@ -97,7 +97,7 @@ makepkg -si
 
 ```bash
 # Clone the repository
-git clone https://github.com/clouddrive-linux/clouddrive.git
+git clone https://github.com/Cyclosaryn/CloudDrive.git
 cd clouddrive
 
 # Install in a virtual environment

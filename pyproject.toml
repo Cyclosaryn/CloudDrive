@@ -58,9 +58,9 @@ clouddrive-daemon = "clouddrive.daemon.service:main"
 clouddrive-gui = "clouddrive.gui.app:main"
 
 [project.urls]
-Homepage = "https://github.com/clouddrive-linux/clouddrive"
-Repository = "https://github.com/clouddrive-linux/clouddrive"
-Issues = "https://github.com/clouddrive-linux/clouddrive/issues"
+Homepage = "https://github.com/Cyclosaryn/CloudDrive"
+Repository = "https://github.com/Cyclosaryn/CloudDrive"
+Issues = "https://github.com/Cyclosaryn/CloudDrive/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
