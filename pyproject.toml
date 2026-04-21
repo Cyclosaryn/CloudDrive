@@ -45,6 +45,9 @@ dev = [
     "mypy>=1.9",
     "pre-commit>=3.6",
 ]
+bundle = [
+    "pyinstaller>=6.0",
+]
 
 [project.scripts]
 clouddrive = "clouddrive.cli.main:main"
