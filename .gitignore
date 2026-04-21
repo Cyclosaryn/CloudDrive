@@ -1,0 +1,47 @@
+# Byte-compiled / optimized
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+*.egg
+AppDir/
+*.AppImage
+linuxdeploy-*.AppImage
+*.spec.build/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# CloudDrive runtime files
+*.clouddrive-tmp
+
+# Token cache (sensitive!)
+token_cache.json
+
+# Local config (may contain client_id)
+# config.toml is tracked; user configs are in ~/.config/clouddrive/
+
+# Test artifacts
+.pytest_cache/
+htmlcov/
+.coverage
+.mypy_cache/
+.ruff_cache/

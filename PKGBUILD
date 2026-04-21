@@ -7,14 +7,12 @@ arch=('any')
 url="https://github.com/Cyclosaryn/CloudDrive"
 license=('GPL-3.0-or-later')
 depends=(
-    'python>=3.11'
+    'python'
     'python-pyside6'
     'python-httpx'
-    'python-msal'
     'python-keyring'
     'python-watchdog'
     'python-platformdirs'
-    'python-pydbus'
     'python-sqlalchemy'
     'python-humanize'
     'dbus'
@@ -23,23 +21,32 @@ makedepends=(
     'python-build'
     'python-installer'
     'python-setuptools'
+    'python-setuptools-scm'
     'python-wheel'
+    'python-pip'
 )
+# Packages not in official repos — installed automatically via pip
+# as dependencies of the wheel, or available from the AUR.
 optdepends=(
     'python-tomli-w: Saving configuration (required for settings changes)'
     'libnotify: Desktop notifications'
     'xdg-utils: Opening folders and URLs'
 )
+# Python deps that pip resolves at install time (not in official repos):
+#   msal, pydbus, aiosqlite
 source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/v${pkgver}.tar.gz")
 sha256sums=('SKIP')
 
+# GitHub archive extracts to CloudDrive-<version>/
+_srcdir="CloudDrive-${pkgver}"
+
 build() {
-    cd "${pkgname}-${pkgver}"
+    cd "${_srcdir}"
     python -m build --wheel --no-isolation
 }
 
 package() {
-    cd "${pkgname}-${pkgver}"
+    cd "${_srcdir}"
     python -m installer --destdir="${pkgdir}" dist/*.whl
 
     # Install systemd user service
